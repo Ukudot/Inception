@@ -1,0 +1,4 @@
+cp -r ~/.var/app/org.gnome.Boxes ~/goinfre && rm -rf ~/.var/app/org.gnome.Boxes/{cache,config,data}/gnome-boxes
+ln -s ~/goinfre/org.gnome.Boxes/cache/gnome-boxes ~/.var/app/org.gnome.Boxes/cache/gnome-boxes
+ln -s ~/goinfre/org.gnome.Boxes/config/gnome-boxes ~/.var/app/org.gnome.Boxes/config/gnome-boxes
+ln -s ~/goinfre/org.gnome.Boxes/data/gnome-boxes ~/.var/app/org.gnome.Boxes/data/gnome-boxes
