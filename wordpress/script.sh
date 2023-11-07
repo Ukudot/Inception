@@ -15,4 +15,8 @@ wget https://wordpress.org/latest.zip
 unzip latest.zip -d /var/www/html/
 cd /var/www/html/wordpress
 cp wp-config-sample.php wp-config.php
+sed -i "s/database_name_here/wordpress_db/" wp-config.php
+sed -i "s/username_here/username/" wp-config.php
+sed -i "s/password_here/password/" wp-config.php
+sed -i "s/'DB_HOST', 'localhost'/'DB_HOST', 'localhost'/" wp-config.php
 chown -R www-data:www-data /var/www/html/wordpress/

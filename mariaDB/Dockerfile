@@ -1,10 +1,12 @@
 FROM debian:bookworm
-RUN printf '#!/bin/sh\nexit 0' > /usr/sbin/policy-rc.d
-COPY script.sh /etc/script.sh
+RUN apt-get update && apt-get upgrade \
+	&& apt-get install mariadb-server -y
+COPY ./tools/script.sh /etc/script.sh
+COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 ENV MARIADB_DATABASE=test
 ENV MARIADB_USER=user
-ENV MARIADB_USER_PASSWORD=user_password
-ENV MARIADB_ROOT_PASSWORD=root_password
+ENV MARIADB_USER_PASSWORD=password
+ENV MARIADB_ROOT_PASSWORD=password
 RUN /bin/bash /etc/script.sh
-EXPOSE 3307:3306
-ENTRYPOINT ["mariadbd", "--user=root"]
+EXPOSE 3306:3306
+ENTRYPOINT ["mysqld_safe"]
