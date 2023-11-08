@@ -1,3 +1,4 @@
+#!/bin/bash
 # start mariadb service
 service mariadb start
 
