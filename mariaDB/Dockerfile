@@ -7,6 +7,5 @@ ENV MARIADB_DATABASE=test
 ENV MARIADB_USER=user
 ENV MARIADB_USER_PASSWORD=password
 ENV MARIADB_ROOT_PASSWORD=password
-RUN /bin/bash /etc/script.sh
 EXPOSE 3306:3306
-ENTRYPOINT ["mysqld_safe"]
+ENTRYPOINT ["/bin/bash", "/etc/script.sh"]

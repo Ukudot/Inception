@@ -14,3 +14,5 @@ mysqladmin -uroot -p$MARIADB_ROOT_PASSWORD shutdown
 
 # unset env variables for security reasons
 unset MARIADB_DATABASE MARIADB_USER MARIADB_USER_PASSWORD MARIADB_ROOT_PASSWORD
+
+exec mysqld_safe
