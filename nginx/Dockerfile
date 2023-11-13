@@ -8,6 +8,6 @@ COPY tools/script.sh /script.sh
 RUN mkdir /var/www/wordpress
 RUN chmod 755 /var/www/wordpress
 RUN chown -R www-data:www-data /var/www/wordpress
-ENV CERTS_=./ssl
-ENV DOMAIN_NAME=gpanico.42.it
+#ENV CERTS_=./ssl
+#ENV DOMAIN_NAME=gpanico.42.it
 ENTRYPOINT ["/bin/bash", "/script.sh"]

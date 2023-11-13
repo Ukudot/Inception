@@ -3,11 +3,16 @@
 service mariadb start
 
 # mariadb-secure-installation
-mariadb -e "CREATE DATABASE $MARIADB_DATABASE;"
-mariadb -e "CREATE USER '$MARIADB_USER'@'localhost' IDENTIFIED BY '$MARIADB_USER_PASSWORD';"
-mariadb -e "GRANT ALL PRIVILEGES ON $MARIADB_DATABASE.* TO '$MARIADB_USER'@'%' IDENTIFIED BY '$MARIADB_USER_PASSWORD';"
-mariadb -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MARIADB_ROOT_PASSWORD';"
+mariadb -uroot -e "CREATE DATABASE $MARIADB_DATABASE;"
+sleep .1
+mariadb -uroot -e "CREATE USER '$MARIADB_USER'@'localhost' IDENTIFIED BY '$MARIADB_USER_PASSWORD';"
+sleep .1
+mariadb -uroot -e "GRANT ALL PRIVILEGES ON $MARIADB_DATABASE.* TO '$MARIADB_USER'@'%' IDENTIFIED BY '$MARIADB_USER_PASSWORD';"
+sleep .1
+mariadb -uroot -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MARIADB_ROOT_PASSWORD';"
+sleep .1
 mariadb -uroot -p$MARIADB_ROOT_PASSWORD -e "FLUSH PRIVILEGES;"
+sleep .1
 
 # stop mariadb
 mysqladmin -uroot -p$MARIADB_ROOT_PASSWORD shutdown
