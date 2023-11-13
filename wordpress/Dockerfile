@@ -34,5 +34,6 @@ ENV WP_ADMIN_EMAIL="admin@gmail.com"
 ENV WP_USER="user"
 ENV WP_USER_EMAIL="user@gmail.com"
 ENV WP_USER_PASSWORD="user"
+COPY ./conf/www.conf /etc/php/8.2/fpm/pool.d
 EXPOSE 9000:9000
 ENTRYPOINT ["/bin/bash", "/etc/script.sh"]
