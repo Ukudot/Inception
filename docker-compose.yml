@@ -68,11 +68,11 @@ volumes:
     driver_opts:
       type: "none"
       o: "bind"
-      device: "/home/${USERNAME}/data/mariadb"
+      device: "/home/gpanico/data/mariadb"
   wordpress:
     name: "wordpress"
     driver: local
     driver_opts:
       type: "none"
       o: "bind"
-      device: "/home/${USERNAME}/data/wordpress"
+      device: "/home/gpanico/data/wordpress"
