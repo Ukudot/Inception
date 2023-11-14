@@ -1,11 +1,14 @@
-ENV		= ./srcs/.env
-HOST		= gpanico.42.it
+ENV				= ./srcs/.env
+HOST			= gpanico.42.it
+VOL_MARIADB		= /home/gpanico/data/mariadb
+VOL_WORDPRESS	= /home/gpanico/data/wordpress
+VOL_ADMINER		= /home/gpanico/data/adminer
 DOCKER_COMPOSE 	= srcs/docker-compose.yml
 
 list_volumes = $(shell docker volume ls -q)
 list_images = $(shell docker images -q)
 
-all: clean host
+all: create_dir clean host
 	docker compose -f ${DOCKER_COMPOSE} --env-file ${ENV} up
 
 host:
@@ -13,6 +16,20 @@ host:
 	then echo "127.0.0.1 ${HOST}" >> /etc/hosts; \
 		echo "host created"; \
 	else echo "hostname already registered"; \
+	fi
+
+create_dir:
+	@if ! test -f $(VOL_MARIADB); \
+	then \
+	mkdir -p $(VOL_MARIADB); \
+	fi
+	@if ! test -f $(VOL_WORDPRESS); \
+	then \
+	mkdir -p $(VOL_WORDPRESS); \
+	fi
+	@if ! test -f $(VOL_ADMINER); \
+	then \
+	mkdir -p $(VOL_ADMINER); \
 	fi
 
 clean_host:
@@ -37,5 +54,6 @@ clean: down clean_images
 
 fclean: clean clean_host clean_volumes
 	@docker system prune -af
-	rm -rf /home/gpanico/data/mariadb/*
-	rm -rf /home/gpanico/data/wordpress/*
+	rm -rf ${VOL_MARIADB}/*
+	rm -rf ${VOL_WORDPRESS}/*
+	rm -rf ${VOL_ADMINER}/*

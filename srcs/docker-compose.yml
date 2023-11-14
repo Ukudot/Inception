@@ -5,11 +5,14 @@ services:
     container_name: mariadb
     build:
       context: ./requirements/mariadb
+    image: mariadb_image
     restart: always
     expose:
       - "3306"
     volumes:
       - mariadb:/var/lib/mysql
+    networks:
+      - 42-network-database
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p$MARIADB_USER_PASSWORD"]
       retries: 10
@@ -25,9 +28,12 @@ services:
     container_name: wordpress
     build:
       context: ./requirements/wordpress
+    image: wordpress_image
     restart: always
     expose:
       - "9000"
+    networks:
+      - 42-network-services
     volumes:
       - wordpress:/var/www/wordpress
     environment:
@@ -46,20 +52,46 @@ services:
       mariadb:
         condition: service_healthy
 
+  adminer:
+    container_name: adminer
+    build:
+      context: ./bonus/adminer
+    image: adminer_image
+    restart: always
+    expose:
+      - "9000"
+    networks:
+      - 42-network-services
+    volumes:
+      - adminer:/var/www/adminer
+    depends_on:
+      mariadb:
+        condition: service_healthy
+
   nginx:
     container_name: nginx
     build:
       context: ./requirements/nginx
+    image: nginx_image
     restart: always
     ports:
       - 443:443
+    networks:
+      - 42-network-services
+      - 42-network-database
     volumes:
       - wordpress:/var/www/wordpress
+      - adminer:/var/www/adminer
     environment:
       - CERTS_=${CERTS_}
       - DOMAIN_NAME=${DOMAIN_NAME}
     depends_on:
       - wordpress
+      - adminer
+
+networks:
+  42-network-services:
+  42-network-database:
 
 volumes:
   mariadb:
@@ -76,3 +108,10 @@ volumes:
       type: "none"
       o: "bind"
       device: "/home/gpanico/data/wordpress"
+  adminer:
+    name: "adminer"
+    driver: local
+    driver_opts:
+      type: "none"
+      o: "bind"
+      device: "/home/gpanico/data/adminer"
