@@ -58,6 +58,8 @@ services:
     environment:
       - CERTS_=${CERTS_}
       - DOMAIN_NAME=${DOMAIN_NAME}
+    depends_on:
+      - wordpress
 
 volumes:
   mariadb:
