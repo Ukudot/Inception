@@ -1,0 +1,25 @@
+server {
+	#SSL/TLS configuration
+	listen 443 ssl;
+	ssl_protocols TLSv1.2 TLSv1.3;
+	ssl_certificate /etc/nginx/${CERTS_}/inception.crt;
+	ssl_certificate_key /etc/nginx/${CERTS_}/inception.key;
+
+	server_name ${DOMAIN_NAME};
+	root /var/www/wordpress;
+	index index.php index.html index.htm;
+
+	access_log /var/log/nginx/${DOMAIN_NAME}.access.log;
+	error_log /var/log/nginx/${DOMAIN_NAME}.error.log;
+
+	location / {
+		try_files $uri $uri/ =404;
+	}
+
+	location ~ \.php$ {
+		include snippets/fastcgi-php.conf;
+		fastcgi_pass wordpress:9000;
+		include fastcgi_params;
+		fastcgi_intercept_errors on;
+	}
+}

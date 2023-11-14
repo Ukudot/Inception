@@ -1,12 +1,12 @@
-ENV		 = .env
-HOST	 = gpanico.42.it
-USERNAME = gpanico
+ENV		= ./srcs/.env
+HOST		= gpanico.42.it
+DOCKER_COMPOSE 	= srcs/docker-compose.yml
 
 list_volumes = $(shell docker volume ls -q)
 list_images = $(shell docker images -q)
 
 all: clean host
-	docker compose --env-file ${ENV} up
+	docker compose -f ${DOCKER_COMPOSE} --env-file ${ENV} up
 
 host:
 	@if ! grep -q "${HOST}" /etc/hosts; \
@@ -19,7 +19,7 @@ clean_host:
 	@sed -i "s/.*${HOST}.*//" /etc/hosts
 
 down:
-	@docker compose down
+	@docker compose -f ${DOCKER_COMPOSE} down
 
 clean_volumes:
 	@if [ -n "$(list_volumes)" ]; \
