@@ -70,6 +70,17 @@ services:
       mariadb:
         condition: service_healthy
 
+  redis:
+    container_name: redis
+    build:
+      context: ./bonus/redis
+    image: redis_image
+    restart: always
+    expose:
+      - "6379"
+    networks:
+      - 42-network-services
+
   nginx:
     container_name: nginx
     build:
@@ -90,6 +101,7 @@ services:
     depends_on:
       - wordpress
       - adminer
+      - redis
 
 networks:
   42-network-services:
