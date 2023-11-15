@@ -11,6 +11,4 @@ RUN chown -R www-data:www-data /var/www/wordpress
 RUN mkdir /var/www/adminer
 RUN chmod 755 /var/www/adminer
 RUN chown -R www-data:www-data /var/www/adminer
-#ENV CERTS_=./ssl
-#ENV DOMAIN_NAME=gpanico.42.it
 ENTRYPOINT ["/bin/bash", "/script.sh"]

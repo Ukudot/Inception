@@ -8,7 +8,7 @@ DOCKER_COMPOSE 	= srcs/docker-compose.yml
 list_volumes = $(shell docker volume ls -q)
 list_images = $(shell docker images -q)
 
-all: create_dir clean host
+up: create_dir clean host
 	docker compose -f ${DOCKER_COMPOSE} --env-file ${ENV} up
 
 host:
@@ -44,6 +44,12 @@ clean_volumes:
 	docker volume rm $(list_volumes); \
 	fi
 
+dclean_volumes: clean_volumes
+	rm -rf ${VOL_MARIADB}/*
+	rm -rf ${VOL_WORDPRESS}/*
+	rm -rf ${VOL_ADMINER}/*
+
+
 clean_images:
 	@if [ -n "$(list_images)" ]; \
 	then \
@@ -52,8 +58,5 @@ clean_images:
 
 clean: down clean_images
 
-fclean: clean clean_host clean_volumes
+fclean: clean clean_host dclean_volumes
 	@docker system prune -af
-	rm -rf ${VOL_MARIADB}/*
-	rm -rf ${VOL_WORDPRESS}/*
-	rm -rf ${VOL_ADMINER}/*

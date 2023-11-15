@@ -20,4 +20,5 @@ RUN wget 'https://github.com/vrana/adminer/releases/download/v4.8.1/adminer-4.8.
 RUN mkdir -p /var/www/adminer
 RUN mv adminer-4.8.1.php /var/www/adminer/adminer.php
 RUN chown -R www-data:www-data /var/www/adminer
+COPY ./conf/www.conf /etc/php/8.2/fpm/pool.d
 ENTRYPOINT ["/bin/bash", "/etc/script.sh"]

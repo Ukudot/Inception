@@ -9,10 +9,10 @@ services:
     restart: always
     expose:
       - "3306"
-    volumes:
-      - mariadb:/var/lib/mysql
     networks:
       - 42-network-database
+    volumes:
+      - mariadb:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p$MARIADB_USER_PASSWORD"]
       retries: 10
@@ -33,6 +33,7 @@ services:
     expose:
       - "9000"
     networks:
+      - 42-network-database
       - 42-network-services
     volumes:
       - wordpress:/var/www/wordpress
@@ -61,6 +62,7 @@ services:
     expose:
       - "9000"
     networks:
+      - 42-network-database
       - 42-network-services
     volumes:
       - adminer:/var/www/adminer
@@ -76,9 +78,9 @@ services:
     restart: always
     ports:
       - 443:443
+      - 8080:8080
     networks:
       - 42-network-services
-      - 42-network-database
     volumes:
       - wordpress:/var/www/wordpress
       - adminer:/var/www/adminer
