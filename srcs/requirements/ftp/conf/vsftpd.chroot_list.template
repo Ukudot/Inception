@@ -1,0 +1,3 @@
+${FTP_USER}
+
+allow_writeable_chroot=YES

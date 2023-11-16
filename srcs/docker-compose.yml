@@ -5,7 +5,7 @@ services:
     container_name: mariadb
     build:
       context: ./requirements/mariadb
-    image: mariadb_image
+    image: gpanico/mariadb
     restart: always
     expose:
       - "3306"
@@ -28,7 +28,7 @@ services:
     container_name: wordpress
     build:
       context: ./requirements/wordpress
-    image: wordpress_image
+    image: gpanico/wordpress
     restart: always
     expose:
       - "9000"
@@ -56,8 +56,8 @@ services:
   adminer:
     container_name: adminer
     build:
-      context: ./bonus/adminer
-    image: adminer_image
+      context: ./requirements/adminer
+    image: gpanico/adminer
     restart: always
     expose:
       - "9000"
@@ -73,8 +73,8 @@ services:
   redis:
     container_name: redis
     build:
-      context: ./bonus/redis
-    image: redis_image
+      context: ./requirements/redis
+    image: gpanico/redis
     restart: always
     expose:
       - "6379"
@@ -85,11 +85,11 @@ services:
     container_name: nginx
     build:
       context: ./requirements/nginx
-    image: nginx_image
+    image: gpanico/nginx
     restart: always
     ports:
-      - 443:443
-      - 8080:8080
+      - "443:443"
+      - "8080:8080"
     networks:
       - 42-network-services
     volumes:
@@ -103,9 +103,31 @@ services:
       - adminer
       - redis
 
+  ftp:
+    container_name: ftp
+    build:
+      context: ./requirements/ftp
+    image: gpanico/ftp
+    restart: always
+    ports:
+      - "2020:20"
+      - "2021:21"
+      - "5000-6000:5000-6000"
+    networks:
+      - 42-network-ftp
+    volumes:
+      - wordpress:/var/www/wordpress
+    environment:
+      - FTP_USER=${FTP_USER}
+      - FTP_PASSWORD=${FTP_PASSWORD}
+    depends_on:
+      - wordpress
+
+
 networks:
   42-network-services:
   42-network-database:
+  42-network-ftp:
 
 volumes:
   mariadb:
