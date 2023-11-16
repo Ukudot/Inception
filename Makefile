@@ -8,7 +8,10 @@ DOCKER_COMPOSE 	= srcs/docker-compose.yml
 list_volumes = $(shell docker volume ls -q)
 list_images = $(shell docker images -q)
 
-up: create_dir clean host
+up: create_dir host
+	docker compose -f ${DOCKER_COMPOSE} --env-file ${ENV} up
+
+clean_up: create_dir clean host
 	docker compose -f ${DOCKER_COMPOSE} --env-file ${ENV} up
 
 host:
